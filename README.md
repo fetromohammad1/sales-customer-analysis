@@ -1,3 +1,5 @@
+<!-- portfolio ready -->
+
 # Sales & Customer Analysis
 
 ## 📌 Project Overview
