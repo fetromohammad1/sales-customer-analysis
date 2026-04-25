@@ -32,17 +32,21 @@ Ranking ini membantu perusahaan dalam menentukan prioritas pelanggan untuk progr
 3. Customer Segmentation
 Sebagian customer masuk kategori VIP dengan kontribusi transaksi lebih tinggi, sementara mayoritas berada di kategori Regular dan Low Value.
 SELECT
-  customer_name,
-  SUM(total_sales) AS total_revenue,
-  CASE
-    WHEN SUM(total_sales) >= 200000 THEN 'VIP'
-    WHEN SUM(total_sales) >= 100000 THEN 'Regular'
-    ELSE 'Low Value'
-  END AS customer_segment
-FROM `data-analyst-project-479415.project_dummy.ecommerce_sales_customer_analytics`
-GROUP BY customer_name
-ORDER BY total_revenue DESC;
-
+  customer_segment,
+  COUNT(*) AS total_customer
+FROM (
+  SELECT
+    customer_name,
+    CASE
+      WHEN SUM(total_sales) >= 4000 THEN 'VIP'
+      WHEN SUM(total_sales) >= 3000 THEN 'Regular'
+      ELSE 'Low Value'
+    END AS customer_segment
+  FROM `data-analyst-project-479415.project_dummy.ecommerce_sales_customer_analytics`
+  GROUP BY customer_name
+)
+GROUP BY customer_segment
+ORDER BY total_customer DESC;
 Insight:
 
 Pelanggan dapat dikelompokkan ke dalam beberapa segmen berdasarkan nilai transaksi.
@@ -87,7 +91,8 @@ SELECT
   frequency,
   monetary
 FROM rfm
-ORDER BY monetary DESC;
+ORDER BY monetary DESC
+LIMIT 10;
 
 Insight:
 
@@ -107,12 +112,10 @@ SELECT
 FROM `data-analyst-project-479415.project_dummy.ecommerce_sales_customer_analytics`
 GROUP BY delivery_status
 ORDER BY total_orders DESC;
-
 💡 Insight:
 
 Menunjukkan distribusi status pengiriman.
 Jika terdapat “pending” atau “cancelled” tinggi, itu sinyal masalah operasional.
 Data ini bisa digunakan untuk meningkatkan efisiensi logistik dan customer satisfaction.
-
 
 
